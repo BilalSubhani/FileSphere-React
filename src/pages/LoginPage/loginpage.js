@@ -1,21 +1,102 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for redirection
 import './loginpage.css';
+import { db } from '../../config/firebase';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 
 const LoginPage = () => {
+    const navigate = useNavigate(); // Hook for navigation
     const [isLogin, setIsLogin] = useState(true);
+    const [users, setUsers] = useState([]);
+    const [signupData, setSignupData] = useState({
+        name: '',
+        email: '',
+        number: '',
+        password: '',
+        isAdmin: 0 // Assuming the field for admin is 'isAdmin'
+    });
+    const [loginData, setLoginData] = useState({
+        email: '',
+        password: '',
+    });
+
+    // Fetch users from Firestore
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'users'));
+                const userList = querySnapshot.docs.map((doc) => ({
+                    ...doc.data(), // Spread document data
+                    id: doc.id,     // Add Firestore doc ID
+                }));
+                setUsers(userList);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+        fetchUsers();
+    }, []);
 
     const handleToggle = (event) => {
         setIsLogin(event.target.value === 'login');
     };
 
-    const handleLoginSubmit = (event) => {
-        event.preventDefault();
-        // Handle login form submission here
+    const handleSignupChange = (e) => {
+        const { name, value } = e.target;
+        setSignupData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleRegisterSubmit = (event) => {
+    const handleLoginChange = (e) => {
+        const { name, value } = e.target;
+        setLoginData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    const handleRegisterSubmit = async (event) => {
         event.preventDefault();
-        // Handle register form submission here
+        try {
+            await addDoc(collection(db, 'users'), signupData);
+            alert('Registration successful!');
+            setSignupData({ name: '', email: '', number: '', password: '', isAdmin: 0 });
+            navigate('/home');
+        } catch (error) {
+            console.error('Error registering user:', error);
+            alert('Failed to register. Please try again.');
+        }
+    };
+
+    const handleLoginSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const querySnapshot = await getDocs(collection(db, 'users'));
+            const userList = querySnapshot.docs.map((doc) => ({
+                ...doc.data()
+            }));
+
+            const user = userList.find(
+                (user) =>
+                    user.email === loginData.email && user.password === loginData.password
+            );
+
+            if (user) {
+                alert('Login successful!');
+                // Navigate based on user role (isAdmin)
+                console.log(user.isAdmin);
+                if (!user.isAdmin) {
+                    navigate('/home'); // Redirect to home for admins
+                } else {
+                    navigate('/dashboard'); // Redirect to dashboard for regular users
+                }
+            } else {
+                alert('Invalid email or password.');
+            }
+
+            setLoginData({ email: '', password: '' });
+
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            alert('Error during login. Please try again later.');
+        }
     };
 
     return (
@@ -54,7 +135,9 @@ const LoginPage = () => {
                                     <input
                                         type="email"
                                         id="login-email"
-                                        name="login-email"
+                                        name="email"
+                                        value={loginData.email}
+                                        onChange={handleLoginChange}
                                         placeholder="Enter your email"
                                         required
                                     />
@@ -65,7 +148,9 @@ const LoginPage = () => {
                                     <input
                                         type="password"
                                         id="login-password"
-                                        name="login-password"
+                                        name="password"
+                                        value={loginData.password}
+                                        onChange={handleLoginChange}
                                         placeholder="Enter your password"
                                         required
                                     />
@@ -88,7 +173,9 @@ const LoginPage = () => {
                                     <input
                                         type="text"
                                         id="register-name"
-                                        name="register-name"
+                                        name="name"
+                                        value={signupData.name}
+                                        onChange={handleSignupChange}
                                         placeholder="Enter your full name"
                                         required
                                     />
@@ -99,8 +186,23 @@ const LoginPage = () => {
                                     <input
                                         type="email"
                                         id="register-email"
-                                        name="register-email"
+                                        name="email"
+                                        value={signupData.email}
+                                        onChange={handleSignupChange}
                                         placeholder="Enter your email"
+                                        required
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="register-number">Phone Number</label>
+                                    <input
+                                        type="text"
+                                        id="register-number"
+                                        name="number"
+                                        value={signupData.number}
+                                        onChange={handleSignupChange}
+                                        placeholder="Enter your phone number"
                                         required
                                     />
                                 </div>
@@ -110,7 +212,9 @@ const LoginPage = () => {
                                     <input
                                         type="password"
                                         id="register-password"
-                                        name="register-password"
+                                        name="password"
+                                        value={signupData.password}
+                                        onChange={handleSignupChange}
                                         placeholder="Create a password"
                                         required
                                     />

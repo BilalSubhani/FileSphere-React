@@ -54,7 +54,7 @@ body {
 
 .form-group input[type="text"],
 .form-group textarea,
-.form-group input[type="file"] {
+.form-group select {
     width: 100%;
     padding: 10px;
     border: 1px solid #888888; /* Light Grey */

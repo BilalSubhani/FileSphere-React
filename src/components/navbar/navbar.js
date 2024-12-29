@@ -22,7 +22,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/userprofile" className="btn">
+          <Link to="/login" className="btn">
             <i className="fas fa-user"></i> Profile
           </Link>
         </li>

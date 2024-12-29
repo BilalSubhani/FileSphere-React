@@ -1,0 +1,59 @@
+.dashboard-container {
+    padding: 20px;
+    background-color: #f8f8f8;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+}
+
+.tabs button {
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.tabs button.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+.documents-section {
+    margin-top: 20px;
+}
+
+.documents-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.documents-table table, th, td {
+    border: 1px solid #ddd;
+}
+
+.documents-table th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+.documents-table td {
+    vertical-align: middle;
+}
+
+.empty-row {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
