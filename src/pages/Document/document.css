@@ -1,0 +1,174 @@
+/* General styles */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+height: 100%;
+background-color: #f8f9fa;
+color: #333;
+}
+
+/* Full height layout */
+body {
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+
+/* Filter section */
+.filter-section {
+background-color: #f8f9fa;
+padding: 30px 20px;
+text-align: center;
+}
+
+.filter-section h1 {
+font-size: 28px;
+color: #002244; /* Navy Blue */
+margin-bottom: 20px;
+}
+
+.filters {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex-wrap: wrap;
+}
+
+.filters select,
+.filters input {
+padding: 10px;
+border: 1px solid #888888; /* Light Grey */
+border-radius: 5px;
+outline: none;
+width: 200px;
+}
+
+.filters button {
+padding: 10px 20px;
+background-color: #002244; /* Navy Blue */
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+
+.filters button:hover {
+background-color: #003366; /* Darker Navy Blue */
+}
+
+/* Upload Document Button */
+.upload-btn {
+padding: 10px 20px;
+background-color: #008080; /* Teal color for distinction */
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.upload-btn:hover {
+background-color: #006666; /* Darker teal on hover */
+transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+/* Document list section */
+.document-list-section {
+background-color: white;
+padding: 30px 20px;
+flex: 1;
+}
+
+.document-card {
+background-color: #f8f9fa; /* Light Grey */
+padding: 20px;
+margin-bottom: 20px;
+border-radius: 10px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.document-card h2 {
+font-size: 24px;
+color: #002244; /* Navy Blue */
+margin-bottom: 10px;
+}
+
+.document-card .upload-date {
+color: #666666; /* Grey */
+font-size: 14px;
+}
+
+.document-card .document-description {
+font-size: 16px;
+color: #333333; /* Dark Grey */
+margin-top: 10px;
+}
+
+/* Pagination */
+.pagination {
+display: flex;
+justify-content: center;
+gap: 10px;
+margin-top: 20px;
+}
+
+.pagination .page-link {
+padding: 10px 20px;
+background-color: #f8f9fa;
+border: 1px solid #888888;
+border-radius: 5px;
+text-decoration: none;
+color: #333333;
+transition: background-color 0.3s ease;
+}
+
+.pagination .page-link:hover {
+background-color: #eaeaea;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+.navbar .logo {
+    font-size: 20px;
+}
+
+.nav-links li {
+    margin-left: 10px;
+}
+
+.filter-section h1 {
+    font-size: 24px;
+}
+
+.filters select,
+.filters input {
+    width: 150px;
+}
+
+.pagination .page-link {
+    padding: 8px 16px;
+}
+}
+
+@media (max-width: 480px) {
+    .filter-section h1 {
+        font-size: 20px;
+    }
+
+    .filters select,
+    .filters input {
+        width: 100%;
+    }
+
+    .filters button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

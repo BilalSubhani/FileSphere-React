@@ -1,0 +1,60 @@
+/* Navbar styles */
+header {
+    background-color: #D1D5DB; /* Navy Blue */
+    color: white;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F5F7FA; /* Navy Blue */
+    padding: 10px 20px;
+}
+
+.logo img {
+    width: 200px; /* Adjust logo size */
+    height: auto;
+}
+
+/* Navigation Links */
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links li {
+    margin-left: 20px;
+}
+
+/* Button style for navigation links */
+.nav-links .btn {
+    color: white;
+    background-color: #4A596E; /* Darker Blue for buttons */
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.nav-links .btn i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+/* Hover effect for buttons */
+.nav-links .btn:hover {
+    background-color: #4b65ba; /* Lighter blue on hover */
+    color: white;
+}
+
+/* Profile icon */
+.nav-links a img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}

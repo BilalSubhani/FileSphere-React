@@ -1,0 +1,134 @@
+/* General styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Auth section */
+.auth-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.form-container {
+    background-color: white;
+    padding: 40px 20px;
+    width: 400px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form h2 {
+    font-size: 24px;
+    color: #4a596e; /* Navy Blue */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #888888; /* Light Grey */
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    color: #333;
+}
+
+.auth-btn {
+    padding: 12px;
+    background-color: #4a596e; /* Navy Blue */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.auth-btn:hover {
+    background-color: #003366; /* Darker Navy Blue */
+}
+
+/* Toggle buttons for login and register */
+input[type="radio"] {
+    display: none;
+}
+
+.toggle-btns {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.toggle-btns label {
+    padding: 10px;
+    background-color: #e0e0e0; /* Light Grey */
+    border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+input#login:checked ~ .toggle-btns label[for="login"],
+input#register:checked ~ .toggle-btns label[for="register"] {
+    background-color: #4a596e; /* Navy Blue */
+    color: white;
+}
+
+.form-wrapper {
+    display: none;
+}
+
+input#login:checked ~ .login-form {
+    display: block;
+}
+
+input#register:checked ~ .register-form {
+    display: block;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .form-container {
+        width: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-container {
+        width: 260px;
+    }
+}
