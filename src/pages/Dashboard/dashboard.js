@@ -64,22 +64,40 @@ const Dashboard = () => {
     }, []);
 
     // Handle deleting a document
-    const handleDeleteDocument = async (documentId, category) => {
+    // Handle deleting a document
+    const handleDeleteDocument = async (documentId, categoryName) => {
         try {
             const confirmDelete = window.confirm(
-                'Are you sure you want to delete this document? This will also decrement the document count for the category.'
+                'Are you sure you want to delete this document? This will also decrement the document count for the associated category.'
             );
             if (confirmDelete) {
-                // Decrement the document count for the category
-                const categoryRef = doc(db, 'categories', category.id);
-                await updateDoc(categoryRef, {
-                    documentCount: increment(-1), // Decrement the count
-                });
-
+                // Ensure categoryName is valid
+                if (!categoryName) {
+                    console.error('Error: Category name is undefined or invalid.');
+                    return;
+                }
+    
+                // Find the category associated with the document
+                const category = categories.find((cat) => cat.name === categoryName);
+                if (category) {
+                    // Check if the document count is already 0
+                    if (category.documentCount > 0) {
+                        // Decrement the document count for the category
+                        const categoryRef = doc(db, 'categories', category.id);
+                        await updateDoc(categoryRef, {
+                            documentCount: increment(-1), // Decrement the count
+                        });
+                    } else {
+                        console.log('Document count is already 0, no need to decrement.');
+                    }
+                } else {
+                    console.warn(`Category with name "${categoryName}" not found.`);
+                }
+    
                 // Delete the document from Firestore
                 const docRef = doc(db, 'documents', documentId);
                 await deleteDoc(docRef);
-
+    
                 // Update the documents state to remove the deleted document
                 const updatedDocuments = documents.filter(
                     (document) => document.id !== documentId
@@ -90,36 +108,7 @@ const Dashboard = () => {
             console.error('Error deleting document:', error);
         }
     };
-
-    // Handle deleting a category
-    // Handle deleting a category only if its documentCount is 0
-const handleDeleteCategory = async (categoryId, documentCount) => {
-    try {
-        if (documentCount > 0) {
-            // Alert the user if the category has documents attached
-            alert('This category cannot be deleted because it has documents attached.');
-            return;
-        }
-
-        const confirmDelete = window.confirm(
-            'Are you sure you want to delete this category? This action cannot be undone.'
-        );
-        if (confirmDelete) {
-            // Now, delete the category
-            const categoryRef = doc(db, 'categories', categoryId);
-            await deleteDoc(categoryRef);
-
-            // Update the categories state to remove the deleted category
-            const updatedCategories = categories.filter(
-                (category) => category.id !== categoryId
-            );
-            setCategories(updatedCategories);
-        }
-    } catch (error) {
-        console.error('Error deleting category:', error);
-    }
-};
-
+    
 
     // Handle adding a new category
     const handleAddCategory = async (event) => {
@@ -150,10 +139,39 @@ const handleDeleteCategory = async (categoryId, documentCount) => {
         }
     };
 
-    // Handle toggling the edit state for category
-    const handleEditCategory = (categoryId, currentName) => {
-        setEditingCategoryId(categoryId);
-        setEditedCategoryName(currentName);
+    // Handle toggling the admin status of a user
+    const handleToggleAdmin = async (userId, currentStatus) => {
+        try {
+            const userRef = doc(db, 'users', userId);
+            await updateDoc(userRef, {
+                isAdmin: currentStatus === 1 ? 0 : 1, // Toggle between 0 and 1
+            });
+
+            // Update the users state to reflect the change
+            const updatedUsers = users.map((user) =>
+                user.id === userId ? { ...user, isAdmin: currentStatus === 1 ? 0 : 1 } : user
+            );
+            setUsers(updatedUsers);
+        } catch (error) {
+            console.error('Error toggling admin:', error);
+        }
+    };
+
+    // Handle deleting a user
+    const handleDeleteUser = async (userId) => {
+        try {
+            const confirmDelete = window.confirm('Are you sure you want to delete this user?');
+            if (confirmDelete) {
+                const userRef = doc(db, 'users', userId);
+                await deleteDoc(userRef);
+
+                // Update the users state to remove the deleted user
+                const updatedUsers = users.filter((user) => user.id !== userId);
+                setUsers(updatedUsers);
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     };
 
     // Handle saving the edited category
@@ -183,6 +201,40 @@ const handleDeleteCategory = async (categoryId, documentCount) => {
             console.error('Error updating category:', error);
         }
     };
+
+    // Handle editing the category name
+    const handleEditCategory = (categoryId, currentName) => {
+        setEditingCategoryId(categoryId);
+        setEditedCategoryName(currentName);
+    };
+
+    // Handle deleting a category
+    // Handle deleting a category
+    const handleDeleteCategory = async (categoryId) => {
+        try {
+            const category = categories.find((cat) => cat.id === categoryId);
+
+            // Check if the category has documentCount 0
+            if (category && category.documentCount === 0) {
+                const confirmDelete = window.confirm('Are you sure you want to delete this category? This category has no documents.');
+
+                if (confirmDelete) {
+                    const categoryRef = doc(db, 'categories', categoryId);
+                    await deleteDoc(categoryRef);
+
+                    // Update the categories state to remove the deleted category
+                    const updatedCategories = categories.filter((category) => category.id !== categoryId);
+                    setCategories(updatedCategories);
+                }
+            } else if (category && category.documentCount > 0) {
+                // If there are documents in the category, alert the user that deletion is not allowed
+                alert('Cannot delete category with documents.');
+            }
+        } catch (error) {
+            console.error('Error deleting category:', error);
+        }
+    };
+
 
     return (
         <div className="dashboard-container">
@@ -226,8 +278,8 @@ const handleDeleteCategory = async (categoryId, documentCount) => {
                                     <td>{user.email}</td>
                                     <td>{user.isAdmin === 1 ? 'Admin' : 'User'}</td>
                                     <td>
-                                        <button>Toggle Admin</button>
-                                        <button>Delete</button>
+                                        <button onClick={() => handleToggleAdmin(user.id, user.isAdmin)}>Toggle Admin</button>
+                                        <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))}

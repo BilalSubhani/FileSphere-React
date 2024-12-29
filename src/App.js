@@ -32,7 +32,7 @@ const App = () => {
           <Route path="/upload" element={<UploadDocument />} />
           <Route path="/dashboard" element={<Dashbord />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/document-details" element={<DocumentDetail />} />
+          <Route path="/document-details/:documentId" element={<DocumentDetail />} /> {/* Updated route */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </div>

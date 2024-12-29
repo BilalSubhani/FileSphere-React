@@ -19,6 +19,9 @@ flex-direction: column;
 justify-content: space-between;
 }
 
+.DocumentBody{
+    min-height: 78vh;
+}
 /* Filter section */
 .filter-section {
 background-color: #f8f9fa;

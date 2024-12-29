@@ -1,64 +1,87 @@
-import React, { useState } from 'react';
-import './documentdetails.css';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { db } from "../../config/firebase"; // Import Firebase configuration
+import { doc, getDoc } from "firebase/firestore";
+import "./documentdetails.css";
 
 const DocumentDetail = () => {
-    const [comment, setComment] = useState('');
-    const [comments, setComments] = useState([
-        { user: 'User1', text: 'This document is really helpful for my project. Thanks for sharing!' },
-        { user: 'User2', text: 'Great insights. I found the recommendations to be very practical.' }
-    ]);
+  const { documentId } = useParams();
+  const [document, setDocument] = useState(null);
 
-    const handleCommentChange = (e) => {
-        setComment(e.target.value);
-    };
+  useEffect(() => {
+    const fetchDocument = async () => {
+      try {
+        const docRef = doc(db, "documents", documentId);
+        const docSnap = await getDoc(docRef);
 
-    const handleCommentSubmit = (e) => {
-        e.preventDefault();
-        if (comment.trim()) {
-            setComments([...comments, { user: 'Anonymous', text: comment }]);
-            setComment('');
+        if (docSnap.exists()) {
+          setDocument(docSnap.data());
+        } else {
+          console.error("No such document!");
         }
+      } catch (error) {
+        console.error("Error fetching document:", error);
+      }
     };
 
-    return (
-        <main>
-            <section className="document-details-section">
-                <h1>Document Title</h1>
-                <p className="upload-date">Uploaded on: January 15, 2024</p>
-                <p className="document-description">
-                    This is a detailed description of the document. It provides an overview of the content, purpose, and any important information related to the document.
-                    The document includes in-depth analysis, data, and recommendations. It is meant to provide clear insight and valuable information to the reader.
-                </p>
+    fetchDocument();
+  }, [documentId]);
 
-                <a href="#" className="download-btn">Download Document</a>
-            </section>
+  if (!document) {
+    return <p>Loading document details...</p>;
+  }
 
-            <section className="comments-section">
-                <h2>Comments</h2>
-                {comments.map((comment, index) => (
-                    <div className="comment" key={index}>
-                        <p><strong>{comment.user}:</strong> {comment.text}</p>
-                    </div>
-                ))}
+  // Function to trigger the download of a .doc file with document details
+  const handleDownload = () => {
+    const documentTitle = document.title;
+    const uploadDate = new Date(document.uploadedOn.seconds * 1000).toLocaleString();
+    const documentDescription = document.description;
+    
+    const content = `
+      <html>
+        <body>
+          <h1>${documentTitle}</h1>
+          <p><strong>Uploaded on:</strong> ${uploadDate}</p>
+          <p>${documentDescription}</p>
+        </body>
+      </html>
+    `;
 
-                <div className="add-comment">
-                    <h3>Add a Comment</h3>
-                    <form className="comment-form" onSubmit={handleCommentSubmit}>
-                        <textarea
-                            id="comment"
-                            name="comment"
-                            rows="4"
-                            value={comment}
-                            onChange={handleCommentChange}
-                            placeholder="Write your comment..."
-                            required
-                        ></textarea>
-                        <button type="submit">Submit Comment</button>
-                    </form>
-                </div>
-            </section>
-        </main>
-    );
+    // Check if document is available
+    if (typeof window !== 'undefined' && window.document) {
+      // Create a Blob with the content and set MIME type for .doc
+      const blob = new Blob([content], { type: 'application/msword' });
+
+      // Check if document.createElement is available
+      if (window.document.createElement) {
+        const link = window.document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${documentTitle}.doc`; // Use document title as the filename
+        link.click(); // Trigger the download
+      } else {
+        console.error('Unable to create download link.');
+      }
+    } else {
+      console.error('Window or document object is not available.');
+    }
+  };
+
+  return (
+    <main>
+      <section className="document-details-section">
+        <h1>{document.title}</h1>
+        <p className="upload-date">
+          Uploaded on: {new Date(document.uploadedOn.seconds * 1000).toLocaleString()}
+        </p>
+        <p className="document-description">{document.description}</p>
+
+        {/* Button to download the document as a .doc file */}
+        <button className="download-btn" onClick={handleDownload}>
+          Download Document
+        </button>
+      </section>
+    </main>
+  );
 };
 
 export default DocumentDetail;
