@@ -1,0 +1,21 @@
+[debug] [2024-12-29T18:03:30.192Z] ----------------------------------------------------------------------
+[debug] [2024-12-29T18:03:30.195Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Axeem\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-12-29T18:03:30.195Z] CLI Version:   13.29.1
+[debug] [2024-12-29T18:03:30.196Z] Platform:      win32
+[debug] [2024-12-29T18:03:30.196Z] Node Version:  v20.18.0
+[debug] [2024-12-29T18:03:30.196Z] Time:          Sun Dec 29 2024 23:03:30 GMT+0500 (Pakistan Standard Time)
+[debug] [2024-12-29T18:03:30.196Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-29T18:03:30.203Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-29T18:03:30.204Z] > authorizing via signed-in user (mailmeatazeem@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\Projects\FileSphere\FileSphere-React
+

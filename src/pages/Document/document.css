@@ -22,6 +22,7 @@ justify-content: space-between;
 .DocumentBody{
     min-height: 78vh;
 }
+
 /* Filter section */
 .filter-section {
 background-color: #f8f9fa;
@@ -87,6 +88,7 @@ transform: scale(1.05); /* Slightly increase size on hover */
 background-color: white;
 padding: 30px 20px;
 flex: 1;
+margin-bottom: 100px;
 }
 
 .document-card {
@@ -117,6 +119,7 @@ margin-top: 10px;
 /* Pagination */
 .pagination {
 display: flex;
+align-items: center;
 justify-content: center;
 gap: 10px;
 margin-top: 20px;

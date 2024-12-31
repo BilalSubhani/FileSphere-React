@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { db } from '../../config/firebase';
 import { collection, addDoc, Timestamp, getDocs, doc, updateDoc, increment } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirect
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
 
 import './uploaddocument.css';
 
 const UploadDocument = () => {
+    const { currentUser } = useContext(AuthContext); // Get currentUser from AuthContext
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -43,6 +45,11 @@ const UploadDocument = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (!currentUser) {
+            alert('You must be logged in to upload a document.');
+            return;
+        }
+
         try {
             const { title, description, category } = formData;
 
@@ -54,7 +61,7 @@ const UploadDocument = () => {
                 title,
                 description,
                 category,
-                uploadedBy: 'azeem', // Hardcoded user for now
+                uploadedBy: currentUser.name, // Use currentUser name from AuthContext
                 uploadedOn,
             });
 

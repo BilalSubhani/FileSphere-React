@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './dashboard.css';
 import { db } from '../../config/firebase';
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, increment } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('allUsers');
@@ -11,6 +13,20 @@ const Dashboard = () => {
     const [newCategoryName, setNewCategoryName] = useState('');
     const [editingCategoryId, setEditingCategoryId] = useState(null);
     const [editedCategoryName, setEditedCategoryName] = useState('');
+
+    const navigate = useNavigate();
+    const { currentUser } = useContext(AuthContext);
+
+    useEffect(() => {
+        if(!currentUser) {
+            navigate('/login');
+        }
+        else{
+            if (currentUser.isAdmin === 0) {
+                navigate("/"); // Redirect to login if not authenticated
+            }
+        }
+      }, [currentUser, navigate]);
 
     // Fetch users from Firestore
     useEffect(() => {
@@ -64,28 +80,23 @@ const Dashboard = () => {
     }, []);
 
     // Handle deleting a document
-    // Handle deleting a document
     const handleDeleteDocument = async (documentId, categoryName) => {
         try {
             const confirmDelete = window.confirm(
                 'Are you sure you want to delete this document? This will also decrement the document count for the associated category.'
             );
             if (confirmDelete) {
-                // Ensure categoryName is valid
                 if (!categoryName) {
                     console.error('Error: Category name is undefined or invalid.');
                     return;
                 }
-    
-                // Find the category associated with the document
+
                 const category = categories.find((cat) => cat.name === categoryName);
                 if (category) {
-                    // Check if the document count is already 0
                     if (category.documentCount > 0) {
-                        // Decrement the document count for the category
                         const categoryRef = doc(db, 'categories', category.id);
                         await updateDoc(categoryRef, {
-                            documentCount: increment(-1), // Decrement the count
+                            documentCount: increment(-1),
                         });
                     } else {
                         console.log('Document count is already 0, no need to decrement.');
@@ -93,12 +104,10 @@ const Dashboard = () => {
                 } else {
                     console.warn(`Category with name "${categoryName}" not found.`);
                 }
-    
-                // Delete the document from Firestore
+
                 const docRef = doc(db, 'documents', documentId);
                 await deleteDoc(docRef);
-    
-                // Update the documents state to remove the deleted document
+
                 const updatedDocuments = documents.filter(
                     (document) => document.id !== documentId
                 );
@@ -108,7 +117,6 @@ const Dashboard = () => {
             console.error('Error deleting document:', error);
         }
     };
-    
 
     // Handle adding a new category
     const handleAddCategory = async (event) => {
@@ -119,15 +127,12 @@ const Dashboard = () => {
         }
 
         try {
-            // Add the new category with name and document count set to 0
             await addDoc(collection(db, 'categories'), {
                 name: newCategoryName,
-                documentCount: 0, // Default value
+                documentCount: 0,
             });
 
-            // Reset the new category input field
             setNewCategoryName('');
-            // Fetch categories again to update the list
             const querySnapshot = await getDocs(collection(db, 'categories'));
             const categoryList = querySnapshot.docs.map((doc) => ({
                 ...doc.data(),
@@ -144,10 +149,9 @@ const Dashboard = () => {
         try {
             const userRef = doc(db, 'users', userId);
             await updateDoc(userRef, {
-                isAdmin: currentStatus === 1 ? 0 : 1, // Toggle between 0 and 1
+                isAdmin: currentStatus === 1 ? 0 : 1,
             });
 
-            // Update the users state to reflect the change
             const updatedUsers = users.map((user) =>
                 user.id === userId ? { ...user, isAdmin: currentStatus === 1 ? 0 : 1 } : user
             );
@@ -165,7 +169,6 @@ const Dashboard = () => {
                 const userRef = doc(db, 'users', userId);
                 await deleteDoc(userRef);
 
-                // Update the users state to remove the deleted user
                 const updatedUsers = users.filter((user) => user.id !== userId);
                 setUsers(updatedUsers);
             }
@@ -182,11 +185,9 @@ const Dashboard = () => {
         }
 
         try {
-            // Update the category in Firestore
             const categoryRef = doc(db, 'categories', categoryId);
             await updateDoc(categoryRef, { name: editedCategoryName });
 
-            // Update the categories state to reflect the change
             const updatedCategories = categories.map((category) =>
                 category.id === categoryId
                     ? { ...category, name: editedCategoryName }
@@ -194,7 +195,6 @@ const Dashboard = () => {
             );
             setCategories(updatedCategories);
 
-            // Reset editing state
             setEditingCategoryId(null);
             setEditedCategoryName('');
         } catch (error) {
@@ -209,32 +209,47 @@ const Dashboard = () => {
     };
 
     // Handle deleting a category
-    // Handle deleting a category
     const handleDeleteCategory = async (categoryId) => {
         try {
             const category = categories.find((cat) => cat.id === categoryId);
 
-            // Check if the category has documentCount 0
-            if (category && category.documentCount === 0) {
-                const confirmDelete = window.confirm('Are you sure you want to delete this category? This category has no documents.');
+            if (category) {
+                const confirmDelete = window.confirm(
+                    `Are you sure you want to delete the category "${category.name}"? This will also delete all associated documents.`
+                );
 
                 if (confirmDelete) {
+                    // Step 1: Delete all documents associated with this category
+                    const associatedDocuments = documents.filter(
+                        (doc) => doc.category === category.name
+                    );
+
+                    // Delete each associated document
+                    for (const document of associatedDocuments) {
+                        const documentRef = doc(db, 'documents', document.id);
+                        await deleteDoc(documentRef);
+                    }
+
+                    // Step 2: Delete the category
                     const categoryRef = doc(db, 'categories', categoryId);
                     await deleteDoc(categoryRef);
 
-                    // Update the categories state to remove the deleted category
-                    const updatedCategories = categories.filter((category) => category.id !== categoryId);
+                    // Step 3: Update state to remove the deleted category and its documents
+                    const updatedCategories = categories.filter(
+                        (category) => category.id !== categoryId
+                    );
                     setCategories(updatedCategories);
+
+                    const updatedDocuments = documents.filter(
+                        (document) => document.category !== category.name
+                    );
+                    setDocuments(updatedDocuments);
                 }
-            } else if (category && category.documentCount > 0) {
-                // If there are documents in the category, alert the user that deletion is not allowed
-                alert('Cannot delete category with documents.');
             }
         } catch (error) {
             console.error('Error deleting category:', error);
         }
     };
-
 
     return (
         <div className="dashboard-container">
@@ -278,8 +293,8 @@ const Dashboard = () => {
                                     <td>{user.email}</td>
                                     <td>{user.isAdmin === 1 ? 'Admin' : 'User'}</td>
                                     <td>
-                                        <button onClick={() => handleToggleAdmin(user.id, user.isAdmin)}>Toggle Admin</button>
-                                        <button onClick={() => handleDeleteUser(user.id)}>Delete</button>
+                                        <button className="btn" onClick={() => handleToggleAdmin(user.id, user.isAdmin)}>Toggle Admin</button>
+                                        <button className="btn" onClick={() => handleDeleteUser(user.id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))}
@@ -336,15 +351,15 @@ const Dashboard = () => {
                                             <td>{category.documentCount || 0}</td>
                                             <td>
                                                 {editingCategoryId === category.id ? (
-                                                    <button onClick={() => handleSaveCategory(category.id)}>
+                                                    <button className="btn" onClick={() => handleSaveCategory(category.id)}>
                                                         Save
                                                     </button>
                                                 ) : (
-                                                    <button onClick={() => handleEditCategory(category.id, category.name)}>
+                                                    <button className="btn" onClick={() => handleEditCategory(category.id, category.name)}>
                                                         Edit
                                                     </button>
                                                 )}
-                                                <button onClick={() => handleDeleteCategory(category.id)}>
+                                                <button className="btn" onClick={() => handleDeleteCategory(category.id)}>
                                                     Delete
                                                 </button>
                                             </td>
@@ -386,7 +401,7 @@ const Dashboard = () => {
                                             <td>{new Date(document.uploadedOn.seconds * 1000).toLocaleString()}</td>
                                             <td>{document.category}</td>
                                             <td>
-                                                <button onClick={() => handleDeleteDocument(document.id, document.category)}>
+                                                <button className="btn" onClick={() => handleDeleteDocument(document.id, document.category)}>
                                                     Delete
                                                 </button>
                                             </td>

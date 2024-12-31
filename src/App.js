@@ -1,8 +1,6 @@
-// src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-// import './App.css';
 
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 // Components
 import Navbar from './components/navbar/navbar';
 import Footer from './components/footer/footer';
@@ -17,27 +15,32 @@ import Login from './pages/LoginPage/loginpage';
 import DocumentDetail from './pages/DocumentDetails/documentdetails';
 import PageNotFound from './pages/pagenotfound/pagenotfound';
 
+// Import the AuthProvider and AuthContext
+import { AuthProvider } from './context/AuthContext'; // Make sure this is correct
 
 
 const App = () => {
+
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/documents" element={<Document />} />
-          <Route path="/userprofile" element={<UserProfile />} />
-          <Route path="/upload" element={<UploadDocument />} />
-          <Route path="/dashboard" element={<Dashbord />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/document-details/:documentId" element={<DocumentDetail />} /> {/* Updated route */}
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </div>
-      <Footer />
-    </Router>
+    <AuthProvider> {/* Wrap your app with the AuthProvider */}
+      <Router>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/documents" element={<Document />} />
+            <Route path="/userprofile" element={<UserProfile />} />
+            <Route path="/upload" element={<UploadDocument />} />
+            <Route path="/dashboard" element={<Dashbord />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/document-details/:documentId" element={<DocumentDetail />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </div>
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
 };
 

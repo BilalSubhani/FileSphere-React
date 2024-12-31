@@ -1,174 +1,172 @@
-/* src/UserProfile.css */
-
-/* General styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+  height: 100%;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Profile section */
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  width: 100%;
+}
+
+/* Profile card container */
+
+.profile-card {
+  background-color: white;
+  padding: 30px 20px;
+  max-width: 600px;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+}
+
+.profile-card h2 {
+  text-align: center;
+  color: #4A596E;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-image img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.user-info {
+  text-align: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.user-info p {
+  margin: 10px 0;
+}
+
+/* Logout button and .dashboard button */
+
+.btns{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.lgt-btn, .dshb-btn {
+  background-color: #4A596E;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+  width: 300px;
+}
+
+.lgt-btn:hover {
+  background-color: #003366; 
+}
+
+/* Uploaded documents section */
+.uploaded-documents {
+  background-color: white;
+  padding: 30px 20px;
+  width: 80%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.uploaded-documents h3 {
+  color: #4A596E;
+  margin-bottom: 20px;
+  font-size: 22px;
+  text-align: center;
+}
+
+/* Table styles */
+.document-table {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.document-table th, .document-table td {
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+}
+
+.document-table th {
+  background-color: #4A596E;
+  color: white;
+}
+
+.document-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.document-table tr:hover {
+  background-color: #ddd;
+}
+
+/* View button */
+.view-btn {
+  background-color: #4A596E;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.view-btn:hover {
+  background-color: #003366;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .profile-card, .uploaded-documents {
+    width: 80%;
   }
-  
-  body, html {
-    height: 100%;
-    background-color: #f8f9fa;
-    color: #333;
+}
+
+@media (max-width: 480px) {
+  .profile-card, .uploaded-documents {
+    width: 95%;
   }
-  
-  body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  /* Profile section */
-  .profile-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
+
+  .document-table {
     width: 100%;
   }
-  
-  /* Profile card container */
-  .profile-card {
-    background-color: white;
-    padding: 30px 20px;
-    max-width: 600px; /* Increased width for better alignment */
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px;
-  }
-  
-  .profile-card h2 {
-    color: #4A596E; /* Navy Blue */
-    margin-bottom: 20px;
-    font-size: 24px;
-  }
-  
-  /* Flexbox container for profile */
-  .profile-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  /* Left side: Profile image */
-  .profile-image img {
-    width: 150px;
-    height: auto;
-    border-radius: 50%; /* Circular image */
-    object-fit: cover; /* Ensures the image fits within the container */
-  }
-  
-  .profile-card h2{
-    margin-left: 20px;
-  }
-  
-  /* Right side: User info aligned right */
-  .user-info {
-    margin-left: 50px;
-    flex-grow: 1;
-    text-align: left;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .user-info p {
-    margin: 10px 0;
-  }
-  
-  /* Edit button */
-  .edit-btn {
-    padding: 10px 20px;
-    background-color: #4A596E; /* Navy Blue */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-  }
-  
-  .edit-btn:hover {
-    background-color: #1b2e42; /* Darker Navy Blue */
-  }
-  
-  /* Uploaded documents section */
-  .uploaded-documents {
-    background-color: white;
-    padding: 30px 20px;
-    max-width: 600px;
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  .uploaded-documents h3 {
-    color: #4A596E; /* Navy Blue */
-    margin-bottom: 20px;
-    font-size: 22px;
-    text-align: center;
-  }
-  
-  .document-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .document-item {
-    background-color: #f8f9fa; /* Light Grey */
-    padding: 20px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .document-item h4 {
-    font-size: 18px;
-    color: #4A596E; /* Navy Blue */
-    margin-bottom: 5px;
-  }
-  
-  .document-item p {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .download-link {
-    color: #4A596E; /* Navy Blue */
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .download-link:hover {
-    color: #003366; /* Darker Navy Blue */
-    text-decoration: underline;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .profile-card, .uploaded-documents {
-      width: 80%;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .profile-card, .uploaded-documents {
-      width: 95%;
-    }
-  
-    .document-item {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .download-link {
-      margin-top: 10px;
-    }
-  }
-  
+}

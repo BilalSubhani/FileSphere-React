@@ -26,10 +26,12 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 900px;
-    margin: 40px auto;
+    margin: 6% auto;
+    height: 400px;
   }
   
   .home-section {
+    margin-top: 60px;
     text-align: center;
   }
   
@@ -75,49 +77,6 @@
   
   .search-btn:hover {
     background-color: #003366;
-  }
-  
-  /* Category highlight */
-  .category-highlight {
-    margin: 20px 0;
-  }
-  
-  .category-highlight h2 {
-    color: #002244;
-    margin-bottom: 10px;
-    font-size: 24px;
-  }
-  
-  .category-highlight ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .category-highlight li {
-    margin: 15px;
-  }
-  
-  .category-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    width: 150px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .category-card:hover {
-    background-color: #f1f1f1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  .category-card a {
-    color: #002244;
-    text-decoration: none;
-    font-weight: bold;
   }
   
   @media (max-width: 768px) {

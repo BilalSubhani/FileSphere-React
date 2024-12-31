@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../config/firebase"; // Import Firebase configuration
 import { collection, getDocs } from "firebase/firestore";
+import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
 import "./document.css"; // Import the CSS for this component
 
 const Document = () => {
@@ -14,6 +15,16 @@ const Document = () => {
   const [documentsPerPage] = useState(10); // Fixed number of documents per page
 
   const navigate = useNavigate();
+
+  // Access the current user from AuthContext
+  const { currentUser } = useContext(AuthContext);
+
+  // If the user is not logged in, redirect to the login page
+  useEffect(() => {
+    if (!currentUser) {
+      navigate("/login"); // Redirect to login if not authenticated
+    }
+  }, [currentUser, navigate]);
 
   // Fetch documents from Firestore
   useEffect(() => {

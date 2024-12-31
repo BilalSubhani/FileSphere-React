@@ -1,41 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for redirection
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
 import './loginpage.css';
 import { db } from '../../config/firebase';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 
 const LoginPage = () => {
-    const navigate = useNavigate(); // Hook for navigation
+    const { login } = useContext(AuthContext); // Use login function from AuthContext
+    const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
-    const [users, setUsers] = useState([]);
     const [signupData, setSignupData] = useState({
         name: '',
         email: '',
         number: '',
         password: '',
-        isAdmin: 0 // Assuming the field for admin is 'isAdmin'
+        isAdmin: 0, // Default to regular user
     });
     const [loginData, setLoginData] = useState({
         email: '',
         password: '',
     });
-
-    // Fetch users from Firestore
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'users'));
-                const userList = querySnapshot.docs.map((doc) => ({
-                    ...doc.data(), // Spread document data
-                    id: doc.id,     // Add Firestore doc ID
-                }));
-                setUsers(userList);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
-        fetchUsers();
-    }, []);
 
     const handleToggle = (event) => {
         setIsLogin(event.target.value === 'login');
@@ -57,7 +41,7 @@ const LoginPage = () => {
             await addDoc(collection(db, 'users'), signupData);
             alert('Registration successful!');
             setSignupData({ name: '', email: '', number: '', password: '', isAdmin: 0 });
-            navigate('/home');
+            setIsLogin(true); // Switch to login section
         } catch (error) {
             console.error('Error registering user:', error);
             alert('Failed to register. Please try again.');
@@ -70,31 +54,34 @@ const LoginPage = () => {
         try {
             const querySnapshot = await getDocs(collection(db, 'users'));
             const userList = querySnapshot.docs.map((doc) => ({
-                ...doc.data()
+                ...doc.data(),
+                id: doc.id,
             }));
 
             const user = userList.find(
-                (user) =>
-                    user.email === loginData.email && user.password === loginData.password
+                (u) => u.email === loginData.email && u.password === loginData.password
             );
 
             if (user) {
                 alert('Login successful!');
+                login(user); // Use the login function from context
+
+                // Persist the user in localStorage (optional, for persistence across refreshes)
+                localStorage.setItem('user', JSON.stringify(user));
+
+                setLoginData({ email: '', password: '' });
+
                 // Navigate based on user role (isAdmin)
-                console.log(user.isAdmin);
-                if (!user.isAdmin) {
-                    navigate('/home'); // Redirect to home for admins
+                if (user.isAdmin) {
+                    navigate('/dashboard');
                 } else {
-                    navigate('/dashboard'); // Redirect to dashboard for regular users
+                    navigate('/home');
                 }
             } else {
                 alert('Invalid email or password.');
             }
-
-            setLoginData({ email: '', password: '' });
-
         } catch (error) {
-            console.error('Error fetching users:', error);
+            console.error('Error during login:', error);
             alert('Error during login. Please try again later.');
         }
     };
@@ -125,8 +112,7 @@ const LoginPage = () => {
                         <label htmlFor="register">Register</label>
                     </div>
 
-                    {/* Login Form */}
-                    {isLogin && (
+                    {isLogin ? (
                         <div className="form-wrapper login-form">
                             <form onSubmit={handleLoginSubmit} className="auth-form">
                                 <h2>Login</h2>
@@ -142,7 +128,6 @@ const LoginPage = () => {
                                         required
                                     />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="login-password">Password</label>
                                     <input
@@ -155,16 +140,12 @@ const LoginPage = () => {
                                         required
                                     />
                                 </div>
-
                                 <button type="submit" className="auth-btn">
                                     Login
                                 </button>
                             </form>
                         </div>
-                    )}
-
-                    {/* Registration Form */}
-                    {!isLogin && (
+                    ) : (
                         <div className="form-wrapper register-form">
                             <form onSubmit={handleRegisterSubmit} className="auth-form">
                                 <h2>Register</h2>
@@ -180,7 +161,6 @@ const LoginPage = () => {
                                         required
                                     />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="register-email">Email</label>
                                     <input
@@ -193,7 +173,6 @@ const LoginPage = () => {
                                         required
                                     />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="register-number">Phone Number</label>
                                     <input
@@ -206,7 +185,6 @@ const LoginPage = () => {
                                         required
                                     />
                                 </div>
-
                                 <div className="form-group">
                                     <label htmlFor="register-password">Password</label>
                                     <input
@@ -219,7 +197,6 @@ const LoginPage = () => {
                                         required
                                     />
                                 </div>
-
                                 <button type="submit" className="auth-btn">
                                     Register
                                 </button>
