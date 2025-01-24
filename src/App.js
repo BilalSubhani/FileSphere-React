@@ -15,14 +15,13 @@ import Login from './pages/LoginPage/loginpage';
 import DocumentDetail from './pages/DocumentDetails/documentdetails';
 import PageNotFound from './pages/pagenotfound/pagenotfound';
 
-// Import the AuthProvider and AuthContext
-import { AuthProvider } from './context/AuthContext'; // Make sure this is correct
+import { AuthProvider } from './context/AuthContext';
 
 
 const App = () => {
 
   return (
-    <AuthProvider> {/* Wrap your app with the AuthProvider */}
+    <AuthProvider> {}
       <Router>
         <div className="App">
           <Navbar />
