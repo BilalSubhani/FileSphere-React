@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { db } from '../../config/firebase';
 import { collection, addDoc, Timestamp, getDocs, doc, updateDoc, increment } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
-import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 import './uploaddocument.css';
 
 const UploadDocument = () => {
-    const { currentUser } = useContext(AuthContext); // Get currentUser from AuthContext
+    const { currentUser } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         title: '',
         description: '',
         category: '',
     });
     const [categories, setCategories] = useState([]);
-    const navigate = useNavigate(); // Initialize useNavigate hook for redirection
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -24,7 +24,7 @@ const UploadDocument = () => {
                 const categoryList = categorySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     name: doc.data().name,
-                    documentCount: doc.data().documentCount || 0, // Ensure documentCount exists
+                    documentCount: doc.data().documentCount || 0,
                 }));
                 setCategories(categoryList);
             } catch (error) {
@@ -53,41 +53,35 @@ const UploadDocument = () => {
         try {
             const { title, description, category } = formData;
 
-            // Get current date
             const uploadedOn = Timestamp.fromDate(new Date());
 
-            // Add document to Firestore
             await addDoc(collection(db, 'documents'), {
                 title,
                 description,
                 category,
-                uploadedBy: currentUser.name, // Use currentUser name from AuthContext
+                uploadedBy: currentUser.name,
                 uploadedOn,
             });
 
-            // Fetch category document to update document count
             const categoryRef = collection(db, 'categories');
             const categorySnapshot = await getDocs(categoryRef);
             const categoryDoc = categorySnapshot.docs.find(doc => doc.data().name === category);
 
             if (categoryDoc) {
                 const categoryDocRef = doc(db, 'categories', categoryDoc.id);
-                
-                // Increment documentCount by 1
+
                 await updateDoc(categoryDocRef, {
                     documentCount: increment(1),
                 });
             }
 
-            // Clear form after submission
             setFormData({
                 title: '',
                 description: '',
                 category: '',
             });
 
-            // Redirect to documents page after successful upload
-            navigate('/documents'); // Navigate to '/documents'
+            navigate('/documents');
 
             alert('Document uploaded successfully!');
         } catch (error) {
