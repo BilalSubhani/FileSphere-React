@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext"; // Correct import of AuthContext
+import { AuthContext } from "../../context/AuthContext";
 import "./navbar.css";
 
 const Navbar = () => {
-  const { currentUser, logout } = useContext(AuthContext); // Access currentUser and logout from context
+  const { currentUser, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // Use logout method from context
-    navigate("/login"); // Redirect to login after logout
+    logout();
+    navigate("/login");
   };
 
   return (
@@ -30,7 +30,7 @@ const Navbar = () => {
             <i className="fas fa-folder"></i> Documents Listing
           </Link>
         </li>
-        {currentUser ? ( // Check for currentUser instead of user
+        {currentUser ? (
           <>
             <li>
               <Link to="/userprofile" className="btn">
