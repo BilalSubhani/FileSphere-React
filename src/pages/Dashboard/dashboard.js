@@ -23,12 +23,11 @@ const Dashboard = () => {
         }
         else{
             if (currentUser.isAdmin === 0) {
-                navigate("/"); // Redirect to login if not authenticated
+                navigate("/");
             }
         }
       }, [currentUser, navigate]);
 
-    // Fetch users from Firestore
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -45,7 +44,6 @@ const Dashboard = () => {
         fetchUsers();
     }, []);
 
-    // Fetch categories from Firestore
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -62,7 +60,6 @@ const Dashboard = () => {
         fetchCategories();
     }, []);
 
-    // Fetch documents from Firestore
     useEffect(() => {
         const fetchDocuments = async () => {
             try {
@@ -79,7 +76,6 @@ const Dashboard = () => {
         fetchDocuments();
     }, []);
 
-    // Handle deleting a document
     const handleDeleteDocument = async (documentId, categoryName) => {
         try {
             const confirmDelete = window.confirm(
@@ -118,7 +114,6 @@ const Dashboard = () => {
         }
     };
 
-    // Handle adding a new category
     const handleAddCategory = async (event) => {
         event.preventDefault();
         if (newCategoryName.trim() === '') {
@@ -144,7 +139,6 @@ const Dashboard = () => {
         }
     };
 
-    // Handle toggling the admin status of a user
     const handleToggleAdmin = async (userId, currentStatus) => {
         try {
             const userRef = doc(db, 'users', userId);
@@ -161,7 +155,6 @@ const Dashboard = () => {
         }
     };
 
-    // Handle deleting a user
     const handleDeleteUser = async (userId) => {
         try {
             const confirmDelete = window.confirm('Are you sure you want to delete this user?');
@@ -177,7 +170,6 @@ const Dashboard = () => {
         }
     };
 
-    // Handle saving the edited category
     const handleSaveCategory = async (categoryId) => {
         if (editedCategoryName.trim() === '') {
             alert('Category name cannot be empty.');
@@ -202,13 +194,11 @@ const Dashboard = () => {
         }
     };
 
-    // Handle editing the category name
     const handleEditCategory = (categoryId, currentName) => {
         setEditingCategoryId(categoryId);
         setEditedCategoryName(currentName);
     };
 
-    // Handle deleting a category
     const handleDeleteCategory = async (categoryId) => {
         try {
             const category = categories.find((cat) => cat.id === categoryId);
@@ -219,22 +209,18 @@ const Dashboard = () => {
                 );
 
                 if (confirmDelete) {
-                    // Step 1: Delete all documents associated with this category
                     const associatedDocuments = documents.filter(
                         (doc) => doc.category === category.name
                     );
 
-                    // Delete each associated document
                     for (const document of associatedDocuments) {
                         const documentRef = doc(db, 'documents', document.id);
                         await deleteDoc(documentRef);
                     }
 
-                    // Step 2: Delete the category
                     const categoryRef = doc(db, 'categories', categoryId);
                     await deleteDoc(categoryRef);
 
-                    // Step 3: Update state to remove the deleted category and its documents
                     const updatedCategories = categories.filter(
                         (category) => category.id !== categoryId
                     );
