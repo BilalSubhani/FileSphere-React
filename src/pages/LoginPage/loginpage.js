@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext'; // Import AuthContext
+import { AuthContext } from '../../context/AuthContext';
 import './loginpage.css';
 import { db } from '../../config/firebase';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 
 const LoginPage = () => {
-    const { login } = useContext(AuthContext); // Use login function from AuthContext
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     const [signupData, setSignupData] = useState({
@@ -14,7 +14,7 @@ const LoginPage = () => {
         email: '',
         number: '',
         password: '',
-        isAdmin: 0, // Default to regular user
+        isAdmin: 0,
     });
     const [loginData, setLoginData] = useState({
         email: '',
@@ -41,7 +41,7 @@ const LoginPage = () => {
             await addDoc(collection(db, 'users'), signupData);
             alert('Registration successful!');
             setSignupData({ name: '', email: '', number: '', password: '', isAdmin: 0 });
-            setIsLogin(true); // Switch to login section
+            setIsLogin(true);
         } catch (error) {
             console.error('Error registering user:', error);
             alert('Failed to register. Please try again.');
@@ -64,14 +64,12 @@ const LoginPage = () => {
 
             if (user) {
                 alert('Login successful!');
-                login(user); // Use the login function from context
+                login(user);
 
-                // Persist the user in localStorage (optional, for persistence across refreshes)
                 localStorage.setItem('user', JSON.stringify(user));
 
                 setLoginData({ email: '', password: '' });
-
-                // Navigate based on user role (isAdmin)
+)
                 if (user.isAdmin) {
                     navigate('/dashboard');
                 } else {
