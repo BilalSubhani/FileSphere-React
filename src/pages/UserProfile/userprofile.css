@@ -17,7 +17,6 @@ body {
   justify-content: space-between;
 }
 
-/* Profile section */
 .profile-section {
   display: flex;
   flex-direction: column;
@@ -25,8 +24,6 @@ body {
   padding: 40px 20px;
   width: 100%;
 }
-
-/* Profile card container */
 
 .profile-card {
   background-color: white;
@@ -70,8 +67,6 @@ body {
   margin: 10px 0;
 }
 
-/* Logout button and .dashboard button */
-
 .btns{
   display: flex;
   flex-direction: column;
@@ -93,7 +88,6 @@ body {
   background-color: #003366; 
 }
 
-/* Uploaded documents section */
 .uploaded-documents {
   background-color: white;
   padding: 30px 20px;
@@ -112,7 +106,6 @@ body {
   text-align: center;
 }
 
-/* Table styles */
 .document-table {
   width: 80%;
   margin-left: auto;
@@ -139,7 +132,6 @@ body {
   background-color: #ddd;
 }
 
-/* View button */
 .view-btn {
   background-color: #4A596E;
   color: white;
@@ -154,7 +146,6 @@ body {
   background-color: #003366;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
   .profile-card, .uploaded-documents {
     width: 80%;
