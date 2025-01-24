@@ -1,4 +1,3 @@
-/* General styles */
 * {
     margin: 0;
     padding: 0;
@@ -12,14 +11,12 @@ body, html {
     color: #333;
 }
 
-/* Full height layout */
 header {
-    background-color: #D1D5DB; /* Navy Blue */
+    background-color: #D1D5DB;
     color: white;
     padding: 0;
 }
 
-/* Document details section */
 .document-details-section {
     background-color: white;
     padding: 40px 20px;
@@ -31,19 +28,19 @@ header {
 
 .document-details-section h1 {
     font-size: 28px;
-    color: #002244; /* Navy Blue */
+    color: #002244;
     margin-bottom: 10px;
 }
 
 .document-details-section .upload-date {
-    color: #666666; /* Grey */
+    color: #666666;
     font-size: 14px;
     margin-bottom: 20px;
 }
 
 .document-details-section .document-description {
     font-size: 16px;
-    color: #333333; /* Dark Grey */
+    color: #333333;
     margin-bottom: 30px;
     line-height: 1.5;
 }
@@ -51,7 +48,7 @@ header {
 .download-btn {
     display: inline-block;
     padding: 12px 20px;
-    background-color: #4A596E; /* Navy Blue */
+    background-color: #4A596E;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -59,10 +56,9 @@ header {
 }
 
 .download-btn:hover {
-    background-color: #003366; /* Darker Navy Blue */
+    background-color: #003366;
 }
 
-/* Comments section */
 .comments-section {
     background-color: white;
     padding: 30px 20px;
@@ -74,7 +70,7 @@ header {
 
 .comments-section h2 {
     font-size: 24px;
-    color: #4A596E; /* Navy Blue */
+    color: #4A596E;
     margin-bottom: 20px;
 }
 
@@ -83,7 +79,7 @@ header {
 }
 
 .comment p {
-    background-color: #f8f9fa; /* Light Grey */
+    background-color: #f8f9fa;
     padding: 15px;
     border-radius: 5px;
     font-size: 16px;
@@ -93,7 +89,7 @@ header {
 .add-comment h3 {
     font-size: 20px;
     margin-bottom: 10px;
-    color: #4A596E; /* Navy Blue */
+    color: #4A596E;
 }
 
 .comment-form {
@@ -104,7 +100,7 @@ header {
 .comment-form textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #888888; /* Light Grey */
+    border: 1px solid #888888;
     border-radius: 5px;
     outline: none;
     font-size: 16px;
@@ -114,7 +110,7 @@ header {
 
 .comment-form button {
     padding: 12px;
-    background-color: #4A596E; /* Navy Blue */
+    background-color: #4A596E;
     color: white;
     border: none;
     border-radius: 5px;
@@ -124,10 +120,9 @@ header {
 }
 
 .comment-form button:hover {
-    background-color: #003366; /* Darker Navy Blue */
+    background-color: #003366;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
     .navbar .logo {
         font-size: 20px;
