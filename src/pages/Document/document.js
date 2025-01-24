@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../config/firebase"; // Import Firebase configuration
+import { db } from "../../config/firebase";
 import { collection, getDocs } from "firebase/firestore";
-import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
-import "./document.css"; // Import the CSS for this component
+import { AuthContext } from "../../context/AuthContext";
+import "./document.css";
 
 const Document = () => {
   const [documents, setDocuments] = useState([]);
@@ -12,21 +12,18 @@ const Document = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [documentsPerPage] = useState(10); // Fixed number of documents per page
+  const [documentsPerPage] = useState(10);
 
   const navigate = useNavigate();
 
-  // Access the current user from AuthContext
   const { currentUser } = useContext(AuthContext);
 
-  // If the user is not logged in, redirect to the login page
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login"); // Redirect to login if not authenticated
+      navigate("/login");
     }
   }, [currentUser, navigate]);
 
-  // Fetch documents from Firestore
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
@@ -36,9 +33,8 @@ const Document = () => {
           id: doc.id,
         }));
         setDocuments(documentList);
-        setFilteredDocuments(documentList); // Initialize filtered documents
+        setFilteredDocuments(documentList);
 
-        // Extract unique categories
         const uniqueCategories = [
           ...new Set(documentList.map((doc) => doc.category)),
         ];
@@ -50,22 +46,19 @@ const Document = () => {
     fetchDocuments();
   }, []);
 
-  // Handle category selection for filtering
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1); // Reset to page 1 after filtering
+    setCurrentPage(1);
     filterDocuments(category, searchQuery);
   };
 
-  // Handle search query input
   const handleSearchChange = (event) => {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
-    setCurrentPage(1); // Reset to page 1 after searching
+    setCurrentPage(1);
     filterDocuments(selectedCategory, query);
   };
 
-  // Filter documents based on category and search query
   const filterDocuments = (category, query) => {
     let filtered = documents;
 
@@ -84,7 +77,6 @@ const Document = () => {
     setFilteredDocuments(filtered);
   };
 
-  // Pagination logic
   const indexOfLastDocument = currentPage * documentsPerPage;
   const indexOfFirstDocument = indexOfLastDocument - documentsPerPage;
   const currentDocuments = filteredDocuments.slice(
@@ -105,7 +97,6 @@ const Document = () => {
     }
   };
 
-  // Navigate to document details page
   const goToDocumentDetails = (documentId) => {
     navigate(`/document-details/${documentId}`);
   };
