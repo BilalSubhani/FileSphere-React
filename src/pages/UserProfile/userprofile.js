@@ -1,42 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext'; // Importing AuthContext
-import { useNavigate } from 'react-router-dom'; // For navigation
-import { db } from '../../config/firebase'; // Import Firestore
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Firebase query methods
-import './userprofile.css'; // Import the CSS file for styling
+import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import './userprofile.css';
 
 const UserProfile = () => {
-  const { currentUser, logout } = useContext(AuthContext); // Accessing currentUser data and logout function from context
-  const navigate = useNavigate(); // To navigate to the login page after logout
-  const [documents, setDocuments] = useState([]); // State to store uploaded documents
+  const { currentUser, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [documents, setDocuments] = useState([]);
 
   const handleLogout = () => {
-    logout(); // Reset the currentUser state in the context
-    navigate('/login'); // Navigate to login page after logout
+    logout();
+    navigate('/login');
   };
 
-  // Navigate to Admin Dashboard if user is Admin
   const handleGoToDashboard = () => {
-    navigate('/dashboard'); // Navigate to the Admin Dashboard
+    navigate('/dashboard');
   };
 
-  // Fetch documents from Firestore based on the logged-in user's name (uploadedBy field)
   const fetchDocuments = async () => {
     if (!currentUser) return;
 
-    // Assuming Firestore collection is named 'documents' and each document has an 'uploadedBy' field
     const q = query(
-      collection(db, 'documents'), // Firestore collection name
-      where('uploadedBy', '==', currentUser.name) // Query where 'uploadedBy' matches the logged-in user's name
+      collection(db, 'documents'),
+      where('uploadedBy', '==', currentUser.name)
     );
 
     try {
       const querySnapshot = await getDocs(q);
       const docs = querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data() // Extract document data
+        ...doc.data()
       }));
-      setDocuments(docs); // Set the fetched documents to state
+      setDocuments(docs);
     } catch (error) {
       console.error("Error fetching documents: ", error);
     }
@@ -44,9 +41,9 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate('/login'); // If not logged in, navigate to login
+      navigate('/login');
     } else {
-      fetchDocuments(); // Fetch documents when user is logged in
+      fetchDocuments();
     }
   }, [currentUser, navigate]);
 
@@ -56,9 +53,8 @@ const UserProfile = () => {
 
   const defaultProfilePic = "https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg";
 
-  // Navigate to document details page using document ID
   const handleViewDocument = (documentId) => {
-    navigate(`/document-details/${documentId}`); // Navigate using document ID
+    navigate(`/document-details/${documentId}`); 
   };
 
   return (
@@ -71,7 +67,7 @@ const UserProfile = () => {
             {/* Left side: Profile Image */}
             <div className="profile-image">
               <img
-                src={currentUser.profilePic || defaultProfilePic}  // Using default image if no profilePic
+                src={currentUser.profilePic || defaultProfilePic}
                 alt="Profile Picture"
               />
             </div>
