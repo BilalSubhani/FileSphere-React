@@ -21,6 +21,11 @@ FileSphere is a web application designed to manage and share documents seamlessl
 ## Website Link
 - [FileSphere](https://login-13d81.web.app/home)
 
+## Issues
+
+1. **Authentication**: Firebase authentication was not used for this project.
+2. **Media File Uploads**: Due to the requirement of a paid Firestore version for media uploads, users can only add a document's `Title`, `Description`, and select a `Category` for uploading.
+
 ## Getting Started
 
 ### Prerequisites
