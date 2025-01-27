@@ -69,7 +69,7 @@ const LoginPage = () => {
                 localStorage.setItem('user', JSON.stringify(user));
 
                 setLoginData({ email: '', password: '' });
-)
+
                 if (user.isAdmin) {
                     navigate('/dashboard');
                 } else {

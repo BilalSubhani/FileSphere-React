@@ -54,7 +54,7 @@ const UserProfile = () => {
   const defaultProfilePic = "https://static.vecteezy.com/system/resources/thumbnails/005/545/335/small/user-sign-icon-person-symbol-human-avatar-isolated-on-white-backogrund-vector.jpg";
 
   const handleViewDocument = (documentId) => {
-    navigate(`/document-details/${documentId}`); 
+    navigate(`/document-details/${documentId}`);
   };
 
   return (
@@ -64,22 +64,22 @@ const UserProfile = () => {
           <h2>User Profile</h2>
 
           <div className="profile-container">
-            {/* Left side: Profile Image */}
+            {}
             <div className="profile-image">
               <img
                 src={currentUser.profilePic || defaultProfilePic}
-                alt="Profile Picture"
+                alt="Profile"
               />
             </div>
 
-            {/* Right side: User Info */}
+            {}
             <div className="user-info">
               <p><strong>Name:</strong> {currentUser.name || 'John Doe'}</p>
               <p><strong>Email:</strong> {currentUser.email || 'john.doe@example.com'}</p>
             </div>
           </div>
 
-          {/* Show Dashboard button only if the user is an Admin */}
+          {}
           <div className='btns'>
             {currentUser.isAdmin ? (
               <button className="dshb-btn" onClick={handleGoToDashboard}>
@@ -91,7 +91,7 @@ const UserProfile = () => {
           </div>
         </div>
 
-        {/* Uploaded documents section */}
+        {}
         <div className="uploaded-documents">
           <h3>Uploaded Documents</h3>
           {documents.length > 0 ? (

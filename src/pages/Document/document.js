@@ -12,7 +12,7 @@ const Document = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [documentsPerPage] = useState(10);
+  const [documentsPerPage] = useState(5);
 
   const navigate = useNavigate();
 

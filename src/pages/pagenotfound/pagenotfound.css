@@ -1,36 +1,36 @@
 .page-not-found {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-height: 100vh;
-background-color: #f8f9fa;
-text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+  text-align: center;
 }
 
 .page-not-found h1 {
-font-size: 48px;
-color: #dc3545;
-margin-bottom: 20px;
+  font-size: 48px;
+  color: #dc3545;
+  margin-bottom: 20px;
 }
 
 .page-not-found p {
-font-size: 20px;
-color: #6c757d;
-margin-bottom: 30px;
+  font-size: 20px;
+  color: #6c757d;
+  margin-bottom: 30px;
 }
 
 .go-home-btn {
-padding: 12px 20px;
-background-color: #4a596e;
-color: white;
-border: none;
-border-radius: 5px;
-font-size: 16px;
-cursor: pointer;
-transition: background-color 0.3s ease;
+  padding: 12px 20px;
+  background-color: #4a596e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .go-home-btn:hover {
-background-color: #003366;
+  background-color: #003366;
 }

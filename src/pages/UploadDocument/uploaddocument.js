@@ -69,7 +69,7 @@ const UploadDocument = () => {
 
             if (categoryDoc) {
                 const categoryDocRef = doc(db, 'categories', categoryDoc.id);
-
+                
                 await updateDoc(categoryDocRef, {
                     documentCount: increment(1),
                 });
@@ -80,7 +80,6 @@ const UploadDocument = () => {
                 description: '',
                 category: '',
             });
-
             navigate('/documents');
 
             alert('Document uploaded successfully!');

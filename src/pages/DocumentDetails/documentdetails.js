@@ -71,7 +71,7 @@ const DocumentDetail = () => {
         </p>
         <p className="document-description">{document.description}</p>
 
-        {}
+        {/* Button to download the document as a .doc file */}
         <button className="download-btn" onClick={handleDownload}>
           Download Document
         </button>

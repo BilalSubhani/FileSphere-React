@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import './dashboard.css';
 import { db } from '../../config/firebase';
 import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, increment } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState('allUsers');
@@ -18,15 +18,12 @@ const Dashboard = () => {
     const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
-        if(!currentUser) {
-            navigate('/login');
-        }
-        else{
-            if (currentUser.isAdmin === 0) {
+        if (!currentUser)
+            navigate("/login");
+        else
+            if(currentUser.isAdmin === 0)
                 navigate("/");
-            }
-        }
-      }, [currentUser, navigate]);
+    }, [currentUser, navigate]);
 
     useEffect(() => {
         const fetchUsers = async () => {
