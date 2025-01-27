@@ -34,8 +34,8 @@ FileSphere is a web application designed to manage and share documents seamlessl
 
 ### Cloning the Repository
 ```bash
-git clone https://github.com/your-repo/filesphere.git
-cd filesphere
+git clone https://github.com/BilalSubhani/FileSphere-React
+cd FileSphere-React
 ```
 
 ### Setting Up the Environment
